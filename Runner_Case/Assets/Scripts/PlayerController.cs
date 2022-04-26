@@ -6,18 +6,18 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 1f;
     public float xRange = 0.75f;
-    [SerializeField] private Rigidbody rb;
+    
     Animator animator;
     public bool IsStart = false;
+    public bool IsFinish = false;
     [SerializeField] GameObject startText;
-    [SerializeField] private float itmeGucu = 0.5f;
-
-
+    
+        
     void Awake()
     {
         animator = GetComponent<Animator>();
         animator.SetBool("IsIdle", true);
-        rb = GetComponent<Rigidbody>();
+        
     }
 
 
@@ -25,21 +25,24 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && IsFinish == false )
         {
             startText.SetActive(false);
             IsStart = true;
             animator.SetBool("IsIdle", false);
             animator.SetBool("IsRun", true);
+
         }
 
-        if (IsStart == true)
+        if (IsStart == true && IsFinish == false)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);
+
         }
 
+        
 
-
+        
         if (transform.position.x < -xRange)
         {
             transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
@@ -49,17 +52,25 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
         }
-
+        
         
            
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "RotateStick")
-        {
-            
-            rb.AddForce(Vector3.right * itmeGucu);
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag=="Finish")
+        {
+            StartCoroutine(delayStop());
         }
+    }
+    IEnumerator delayStop()
+    {
+        yield return new WaitForSeconds(1f);
+        IsFinish = true;
+        
+        animator.SetBool("IsRun", false);
+        animator.SetBool("IsIdle", true);
+        
     }
 }
