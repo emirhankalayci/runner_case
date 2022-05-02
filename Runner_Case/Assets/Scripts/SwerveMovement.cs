@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 
 
+
 public class SwerveMovement : MonoBehaviour
 {
     private SwerveInputSystem swerveInputSystem;
@@ -13,7 +14,11 @@ public class SwerveMovement : MonoBehaviour
     PlayerController playerController;
     [SerializeField] Material RedMat;
     [SerializeField] GameObject[] wallPrefabs;
-    private int score = 0;
+    private float score = 0;
+    public int minScore = 0;
+    public int maxScore = 100;
+    [SerializeField] Material[] wallMat;
+    public bool controlScore;
 
     private void Awake()
     {
@@ -24,7 +29,10 @@ public class SwerveMovement : MonoBehaviour
 
     private void Update()
     {
-        
+
+
+        playerController.finishText.GetComponent<Text>().text=score.ToString("0");
+
         if (playerController.IsFinish == false)
         {
             float swerveAmount = Time.deltaTime * swerveSpeed * swerveInputSystem.movefactorx;
@@ -38,9 +46,10 @@ public class SwerveMovement : MonoBehaviour
             swerveAmount = Mathf.Clamp(swerveAmount, -maxSwerveAmount, maxSwerveAmount);
 
             StartCoroutine(timeDelay());
+            //StartCoroutine(scoreDelay());
             
         }
-
+        
     }
 
     IEnumerator timeDelay()
@@ -50,12 +59,27 @@ public class SwerveMovement : MonoBehaviour
             
             if (Input.GetMouseButton(0))
             {                
-                wallPrefabs[i].GetComponent<MeshRenderer>().material = RedMat;
-                playerController.finishText.GetComponent<UnityEngine.UI.Text>().text = score.ToString();
-                score = score + 10;
-                yield return new WaitForSeconds(1);
-                
-            }           
+                //wallPrefabs[i].GetComponent<MeshRenderer>().material = RedMat;
+                wallPrefabs[i].GetComponent<MeshRenderer>().material = wallMat[1];
+                controlScore = true;
+                yield return new WaitForSeconds(0.2f);                
+            }
+            controlScore = false;
         }       
     }
+
+    IEnumerator scoreDelay()
+    {
+       
+        if (controlScore == true)
+        {
+            score += 10;
+            yield return new WaitForSeconds(1f);
+            score = Mathf.Clamp(score, minScore, maxScore);
+
+
+        }
+    }
+
+   
 }
