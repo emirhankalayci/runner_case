@@ -10,7 +10,7 @@ public class Ranking : MonoBehaviour
 
     public float []DistanceArrays;
 
-    [Header ("Players Player01 = Player Player")]
+    [Header ("Players")]
     public Transform Player01;
     public Transform Player02;
     public Transform Player03;
@@ -45,7 +45,6 @@ public class Ranking : MonoBehaviour
     {
         NextCheckPoint.SetActive(false);
     }
-
     
     void Update()
     {

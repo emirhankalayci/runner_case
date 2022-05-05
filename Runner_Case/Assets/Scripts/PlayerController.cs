@@ -16,39 +16,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject perText;
     public GameObject finishText;
     public Transform RespawnPoint;
-
     
+    SwerveMovement swerweMovement;    
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         animator.SetBool("IsIdle", true);
-        
+        swerweMovement = FindObjectOfType<SwerveMovement>();
     }
 
-
-    // Update is called once per frame
     void Update()
-    {
-               
-        
+    {                      
         if (Input.GetMouseButtonDown(0) && IsFinish == false )
         {
             startText.SetActive(false);
             IsStart = true;
             animator.SetBool("IsIdle", false);
             animator.SetBool("IsRun", true);
-
         }
 
         if (IsStart == true && IsFinish == false)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);
-
         }
-
-   
-        
+      
         if (transform.position.x < -xRange)
         {
             transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
@@ -57,10 +49,7 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x > xRange)
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
-        }
-        
-        
-           
+        }       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,15 +58,14 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(delayStop());
             perText.SetActive(true);
-            finishText.SetActive(true);       
-        }
+            finishText.SetActive(true);          
+        }     
 
         if (other.gameObject.tag == "FinishFlag")
         {
             Destroy(other.gameObject);
             finishFlag.SetActive(true);  
-        }      
-
+        }    
     }
     public IEnumerator delayStop()
     {
@@ -88,14 +76,13 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsIdle", true);
         
     }
+
     void OnCollisionEnter(Collision other)
-    {
-        
-        if (other.gameObject.tag =="Obstacle")
+    {     
+        if (other.gameObject.tag == "Obstacle")
         {
             transform.position = RespawnPoint.transform.position;
             transform.rotation = RespawnPoint.rotation;
-        }      
+        }         
     }
-
 }

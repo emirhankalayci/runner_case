@@ -18,6 +18,8 @@ TagManager:
   - AI8
   - AI9
   - AI10
+  - Paint
+  - OnFinish
   layers:
   - Default
   - TransparentFX
