@@ -19,11 +19,13 @@ public class SwerveMovement : MonoBehaviour
     public int maxScore = 100;
     [SerializeField] Material[] wallMat;
     public bool controlScore;
-
+    AI ai;
+    [SerializeField] GameObject completePanel;
     private void Awake()
     {
         swerveInputSystem = GetComponent<SwerveInputSystem>();
         playerController = FindObjectOfType<PlayerController>();
+        ai = FindObjectOfType<AI>();
         
     }
 
@@ -38,34 +40,39 @@ public class SwerveMovement : MonoBehaviour
             float swerveAmount = Time.deltaTime * swerveSpeed * swerveInputSystem.movefactorx;
             swerveAmount = Mathf.Clamp(swerveAmount, -maxSwerveAmount, maxSwerveAmount);
             transform.Translate(swerveAmount, 0, 0);
+
         }
 
-        if (playerController.IsFinish == true)
+        if (playerController.IsFinish == true && ai.aiFinish == false)
         {
             float swerveAmount = Time.deltaTime * swerveSpeed * swerveInputSystem.movefactorx;
             swerveAmount = Mathf.Clamp(swerveAmount, -maxSwerveAmount, maxSwerveAmount);
 
             StartCoroutine(timeDelay());
-            //StartCoroutine(scoreDelay());
-            
+            //StartCoroutine(scoreDelay());           
         }
+        
         
     }
 
     IEnumerator timeDelay()
     {
-        for (int i = 0; i < wallPrefabs.Length; i++)
+        int i = 0;
+        for (i = 0; i < wallPrefabs.Length; i++)
         {
             
             if (Input.GetMouseButton(0))
-            {                
-                //wallPrefabs[i].GetComponent<MeshRenderer>().material = RedMat;
+            {                                
                 wallPrefabs[i].GetComponent<MeshRenderer>().material = wallMat[1];
                 controlScore = true;
                 yield return new WaitForSeconds(0.2f);                
             }
             controlScore = false;
-        }       
+        }
+        if (i == wallPrefabs.Length )
+        {
+            completePanel.SetActive(true);
+        }
     }
 
     IEnumerator scoreDelay()

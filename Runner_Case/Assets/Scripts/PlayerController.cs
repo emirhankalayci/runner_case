@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject finishFlag;
     [SerializeField] GameObject perText;
     public GameObject finishText;
+    public Transform RespawnPoint;
+
+    
 
     void Awake()
     {
@@ -27,7 +30,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+               
         
         if (Input.GetMouseButtonDown(0) && IsFinish == false )
         {
@@ -76,7 +79,7 @@ public class PlayerController : MonoBehaviour
         }      
 
     }
-    IEnumerator delayStop()
+    public IEnumerator delayStop()
     {
         yield return new WaitForSeconds(1f);
         IsFinish = true;
@@ -85,4 +88,14 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsIdle", true);
         
     }
+    void OnCollisionEnter(Collision other)
+    {
+        
+        if (other.gameObject.tag =="Obstacle")
+        {
+            transform.position = RespawnPoint.transform.position;
+            transform.rotation = RespawnPoint.rotation;
+        }      
+    }
+
 }
