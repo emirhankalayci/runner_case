@@ -57,8 +57,8 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag=="Finish")
         {
             StartCoroutine(delayStop());
-            perText.SetActive(true);
-            finishText.SetActive(true);          
+            //perText.SetActive(true);
+            //finishText.SetActive(true);          
         }     
 
         if (other.gameObject.tag == "FinishFlag")

@@ -58,7 +58,7 @@ public class AI : MonoBehaviour
 
         if (waypoints[j].transform.childCount == 1)
         {
-            if (j != 12)
+            if (j != 15)
             {
                 targetPoint = waypoints[j].transform.GetChild(0).transform.position;
                 j++;
@@ -66,7 +66,7 @@ public class AI : MonoBehaviour
         }
         else if (waypoints[j].transform.childCount == 2)
         {
-            if (j != 12)
+            if (j != 15)
             {
                 targetPoint = waypoints[j].transform.GetChild(Random.Range(0, 1)).transform.position;
                 j++;
@@ -76,11 +76,27 @@ public class AI : MonoBehaviour
         }
         else if (waypoints[j].transform.childCount == 3)
         {
-            if (j != 12)
+            if (j != 26)
             {
                 targetPoint = waypoints[j].transform.GetChild(Random.Range(0, 2)).transform.position;
                 j++;
             }           
+        }
+        else if (waypoints[j].transform.childCount == 4)
+        {
+            if (j != 26)
+            {
+                targetPoint = waypoints[j].transform.GetChild(Random.Range(0, 3)).transform.position;
+                j++;
+            }
+        }
+        else if (waypoints[j].transform.childCount == 5)
+        {
+            if (j != 26)
+            {
+                targetPoint = waypoints[j].transform.GetChild(Random.Range(0, 4)).transform.position;
+                j++;
+            }
         }
     }
 
@@ -110,13 +126,15 @@ public class AI : MonoBehaviour
         {
             failPanel.SetActive(true);
             StartCoroutine(delayStop());
-            aiFinish = true;           
+            aiFinish = true;
+            Time.timeScale = 0;
         }
     }
 
     public void restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public IEnumerator delayStop()

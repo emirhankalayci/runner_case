@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingObstacle : MonoBehaviour
+public class RotatingPlatform : MonoBehaviour
 {
     [SerializeField] private float rotate;
     [SerializeField] private float speed;
